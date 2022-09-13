@@ -1,3 +1,32 @@
+
+------- ========== Q8  ポジション　毎の　ゴール数　を表示
+select p.position as ポジション, count(g.id) as ゴール数
+from players p
+left outer join goals g on g.player_id = p.id
+group by p.position
+order by ゴール数 desc;
+
+------ ========== Q9 2014-06-13 時点での年齢を表示
+select birth, date_part('year', age('2014-06-13', birth)) as age, name, position 
+from players
+order by age desc;
+
+-----  ========== Q 10 player_id の null を表示 IS null
+select count(id) as オウンゴール from goals where player_id IS null
+group by player_id;
+
+------- ========== Q11 2014-6-13から2014-6-27までに行われていました。
+select countries.group_name, count(goals.id)
+from goals
+left outer join pairings on pairings.id = goals.pairing_id 
+left outer join countries on countries.id = pairings.my_country_id 
+where pairings.kickoff between '2014-06-13 0:00:00' and '2014-06-27 23:59:59'
+group by countries.group_name 
+order by countries.group_name asc;
+
+
+
+
 --------------------------- サッカー Q1 ---------------------------
 --- 各グループの中でFIFAランクが最も高い国と低い国のランキング番号を表示してください。
 --- グループ, ランキング最上位, ラインキング最下位
